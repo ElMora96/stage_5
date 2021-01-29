@@ -83,10 +83,10 @@ def parallelize(series, n_series = 24):
 	Return an array of shape (n_series, len(series)/n_series)"""
 	if len(series) % n_series != 0:
 		raise ValueError("parallelized series do not result in equal length")
-	new_len = len(series) / n_series
-	X = np.array(shape= (n_series, new_len))
+	new_len =int(len(series) / n_series)
+	X = np.empty(shape = (n_series, new_len))
 	for j in range(new_len):
-		X[:,j] = series[24*j, 24*(1 + j)]
+		X[:,j] = series[24*j: 24*(1 + j)]
 	return X
 
 ###MISC###
