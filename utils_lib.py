@@ -89,6 +89,21 @@ def parallelize(series, n_series = 24):
 		X[:,j] = series[24*j: 24*(1 + j)]
 	return X
 
+def unparallelize(array, index = None):
+	"""Reverse parallelized TS array.
+	Return (pandas) time series with given index"""
+	if len(array.shape) != 2:
+		raise ValueError("Array must be a matrix")
+	n_series = array.shape[0]
+	len_series = array.shape[1]
+	flattened = np.empty(n_series*len_series) #empty array to store values
+	count = 0
+	for j in range(len_series):
+		for i in range(n_series):
+			flattened[count] = array[i,j]
+			count += 1
+	return pd.Series(flattened, index = index)
+
 ###MISC###
 #Check if all elements in iterable are equal
 def all_equal(iterable):
@@ -102,4 +117,4 @@ def add_months(sourcedate, months):
     year = sourcedate.year + month // 12
     month = month % 12 + 1
     day = min(sourcedate.day, calendar.monthrange(year,month)[1])
-    return datetime.date(year, month, day)
+    

@@ -67,7 +67,6 @@ y_train = train.values[7:]
 #Complete
 complete_model = LinearRegression().fit(X_train, y_train)
 y_hat_complete = complete_model.predict(X_test)
-#%%
 #Restricted Model
 restrict_model = LinearRegression().fit(X_train[:,selected_mask], y_train)
 y_hat_restricted = restrict_model.predict(X_test[:,selected_mask])
