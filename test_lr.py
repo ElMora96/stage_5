@@ -38,15 +38,26 @@ true_load = pd.read_csv("D:/Users/F.Moraglio/Documents/python_forecasting/stage_
 					)
 true_load = true_load.tz_localize("Europe/Rome", ambiguous="infer")
 true_load = true_load.tz_convert("UTC") 
-#%%
+
+temp = pd.read_csv("D:/Users/F.Moraglio/Documents/python_forecasting/stage_2/data/transformed/temperatures.csv",
+					sep = ";", #specify separator
+					parse_dates = True,
+					dayfirst= True, #To parse
+					decimal=",",
+					index_col = 0,
+					squeeze = True
+					) 
+temp = temp.tz_convert("UTC")
+
 #Shorten
+temp = temp.loc["2018":, "NORD"]
 egea_forecast = egea_forecast.loc["2020", "NORD"]
 true_load = true_load.loc["2018":, "NORD"]
 #%%
-model = lr.LinRegFSModel(true_load, egea_forecast)
+model = lr.LinRegFSModel(true_load, egea_forecast, temp)
 #%%
-test_time_range = pd.date_range(start = '2020-11-01 00:00:00+00:00',
-						   end = '2020-11-30 23:00:00+00:00',
+test_time_range = pd.date_range(start = '2020-04-01 00:00:00+00:00',
+						   end = '2020-04-30 23:00:00+00:00',
 						   freq = 'H',
 						   tz = 'UTC'
 						   )

@@ -117,4 +117,17 @@ def add_months(sourcedate, months):
     year = sourcedate.year + month // 12
     month = month % 12 + 1
     day = min(sourcedate.day, calendar.monthrange(year,month)[1])
-    
+
+def adjust_index(series):
+	"""Correct DST index with minute set to one.
+	Return series with adjusted index."""
+	new_index = []#new empty list for index
+	for ix in series.index:
+		if ix.minute: #If minutes differ from zero
+			#Set to zero
+			print(ix)
+			new_index.append(ix.replace(minute = 0))
+		else:
+			new_index.append(ix)
+	series.index = pd.Index(new_index) #Set new index
+	return series #Return reindexed series
